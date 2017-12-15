@@ -34,9 +34,6 @@ public abstract class AbstractLogOutputter implements LogOutputter{
 		
 		return 0;
 	}
-	/**
-	 * 可根据tag拦截是否输出
-	 */
 	protected boolean onPreOutput(int priority, String tag, String msg) {
 		return false;
 	}

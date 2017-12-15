@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Configuration {
-	/**
-	 * 是否是debug模式
-	 */
+
 	private boolean isDebug = false;
 	private int methodStackTraceDepth = 0;
 	private boolean isMaxMethodStackTraceDepth;

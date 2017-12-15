@@ -86,6 +86,9 @@ public final class Logger {
 				newLogService.setLogFormatter(logFormatter);
 				
 				List<Class<? extends AbstractLogOutputter>> list = configuration.getLogOutputters();
+				if (list.size() == 0) {
+					list.add(getDefaultOutput());
+				}
 				for (int i = 0; i < list.size(); i++) {
 					Class<? extends AbstractLogOutputter> outputterClass = list.get(i);
 					AbstractLogOutputter logOutputter = outputterClass.newInstance();
@@ -104,5 +107,14 @@ public final class Logger {
 			throw new LoggerRunntimeException("create logservice exception", e);
 		}
 	}
-	
+
+	static Class<? extends AbstractLogOutputter> getDefaultOutput(){
+		try {
+			Class<? extends AbstractLogOutputter> defaultImpl = (Class<? extends AbstractLogOutputter>)Class.forName("com.devyok.logger.impl.AndroidConsoleOutputter");
+			return defaultImpl;
+		} catch(Exception e){
+			return null;
+		}
+	}
+
 }
