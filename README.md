@@ -30,7 +30,7 @@ Android  Log输出框架
                                      .setOutputCodeLine(true));
 
 ### 第三步 ###
-在Application#onCreate中配置Logger
+Logger提供的接口
 
 	Logger.info(LOG_TAG,"onCreate info enter");
     Logger.debug(LOG_TAG,"onCreate debug enter");
@@ -44,7 +44,7 @@ Android  Log输出框架
 
 ## 详细配置 ##
 
-### 方法跟踪 ###
+### *方法跟踪* ###
 配置如下：
 	
 	Logger.config(new Configuration().setMethodStackTraceDepth(2));
@@ -57,7 +57,7 @@ Android  Log输出框架
 “MainActivity.onCreate:19” ， MainActivity.onCreate (类名.方法名)：19 (代码行)， 表示log是在MainActivity#onCreate方法的19行输出的。
 -> 表示调用关系，从Activity.performCreate 5104行调用了MainActivity.onCreate,log输出是在onCreate的19行。
 
-### 显示代码行 ###
+### *显示代码行* ###
 配置如下：
 	
 	Logger.config(new Configuration().setOutputCodeLine(true));
@@ -70,7 +70,7 @@ Android  Log输出框架
 “MainActivity.onCreate:19” ， MainActivity.onCreate (类名.方法名)：19 (代码行)， 表示log是在MainActivity#onCreate方法的19行输出的。
 
 
-### 显示线程信息 ###
+### *显示线程信息* ###
 配置如下：
 	
 	Logger.config(new Configuration().setDebug(false)
