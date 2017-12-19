@@ -48,7 +48,10 @@ public final class Logger {
 	private static Configuration sConfiguration = new Configuration();
 	
 	public static void config(Configuration configuration) {
-		sConfiguration = new Configuration(configuration);
+		if(configuration == null){
+			return ;
+		}
+		sConfiguration = configuration;
 	}
 	
 	public static void verbose(String tag,String message,Object...args){
@@ -77,7 +80,7 @@ public final class Logger {
 			
 			if (logService == null) {
 
-				Configuration configuration = new Configuration(sConfiguration);
+				Configuration configuration = sConfiguration;
 
 				LogService newLogService = new LogService(configuration);
 

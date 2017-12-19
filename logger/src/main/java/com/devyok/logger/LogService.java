@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author wei.deng
+ * @author DengWei
  */
 final class LogService {
 

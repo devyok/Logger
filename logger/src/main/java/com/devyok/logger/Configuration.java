@@ -2,14 +2,16 @@ package com.devyok.logger;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author DengWei
+ */
 public class Configuration {
 
 	private boolean isDebug = false;
 	private int methodStackTraceDepth = 0;
 	private boolean isMaxMethodStackTraceDepth;
 	
-	private boolean isOutputThreadInfo = true;
+	private boolean isOutputThreadInfo = false;
 	private boolean isOutputSystemInfo = false;
 	private boolean isOutputCodeLine = false;
 

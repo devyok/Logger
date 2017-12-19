@@ -2,7 +2,7 @@ package com.devyok.logger;
 
 
 /**
- * @author wei.deng
+ * @author DengWei
  */
 public class DefaultLogFormatter implements LogFormatter{
 
@@ -21,7 +21,7 @@ public class DefaultLogFormatter implements LogFormatter{
 			formatResult = String.format(message, args);
 		}
 		
-		logBuffer.append("log[").append(formatResult).append("] ,");
+		logBuffer.append("[").append(formatResult).append("] ,");
 		
 		if(configuration.isOutputCodeLine()){
 			String codeLine = buildCodeLine();
@@ -42,15 +42,25 @@ public class DefaultLogFormatter implements LogFormatter{
 		}
 		
 		if(configuration.isOutputSystemInfo()){
-			String systemInfos = buildThreadInfos();
+			String systemInfos = buildSystemInfos();
 			logBuffer.append(systemInfos);
 			logBuffer.append(" ,");
 		}
-		
-		logBuffer = logBuffer.deleteCharAt(logBuffer.length() - 1);
-		
-		
+
+		String extInfos = buildExtInofs(configuration);
+
+		if(extInfos == null){
+			logBuffer = logBuffer.deleteCharAt(logBuffer.length() - 1);
+		} else {
+			logBuffer.append(extInfos);
+		}
+
 		return logBuffer.toString();
+	}
+
+	protected String buildExtInofs(Configuration cfg){
+
+		return null;
 	}
 
 	protected String buildThreadInfos(){
@@ -112,7 +122,7 @@ public class DefaultLogFormatter implements LogFormatter{
 		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
         final StackTraceElement trace = elements[LOG_DEPTH];
         
-        codeLineBuffer.append("invoke line[")
+        codeLineBuffer.append("code line[")
         			  .append(getSimpleClassName(trace.getClassName())+"." + trace.getMethodName() + ":" + trace.getLineNumber())
         			  .append("]");
         

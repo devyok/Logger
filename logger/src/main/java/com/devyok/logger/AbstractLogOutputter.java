@@ -1,7 +1,7 @@
 package com.devyok.logger;
 
 /**
- * @author wei.deng
+ * @author DengWei
  */
 public abstract class AbstractLogOutputter implements LogOutputter{
 
@@ -17,21 +17,19 @@ public abstract class AbstractLogOutputter implements LogOutputter{
 
 	@Override
 	public int output(int priority, String tag, String msg,Object...args) {
-		
+
 		if(logFormatter == null) logFormatter = new DefaultLogFormatter();
 		
 		synchronized (logFormatter) {
 			msg = logFormatter.format(msg,args);
 		}
-		
+
 		if(onPreOutput(priority,tag,msg)){
 			return 0;
 		}
-		
 		if(onOutput(priority,tag,msg)){
 			return 1;
 		}
-		
 		return 0;
 	}
 	protected boolean onPreOutput(int priority, String tag, String msg) {
