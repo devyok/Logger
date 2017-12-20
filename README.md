@@ -5,10 +5,9 @@ Android  Log输出框架
 ## 优势 ##
 
 - 规范LOG输出;
-
-- 统一拦截所有LOG输出；
-
-- 可定制LOG输出格式与调试信息；
+- 控制拦截应用中所有LOG输出；
+- 可定制LOG输出风格；
+- 可定制相关LOG输出时携带的调试信息(方法调用链/线程信息等)；
 
 
 ## 如何使用 ##
@@ -30,7 +29,7 @@ Android  Log输出框架
                                      .setOutputCodeLine(true));
 
 ### 第三步 ###
-Logger提供的接口
+使用Logger提供的接口
 
 	Logger.info(LOG_TAG,"onCreate info enter");
     Logger.debug(LOG_TAG,"onCreate debug enter");
@@ -38,15 +37,12 @@ Logger提供的接口
     Logger.verbose(LOG_TAG,"onCreate verbose enter");
 	
 
-经过以上步骤就可以实现控制。
-
-
-
 ## 详细配置 ##
 
-### *方法跟踪* ###
+### 方法跟踪 ###
 配置如下：
 	
+	//方法的参数值表示要抓取方法调用的深度
 	Logger.config(new Configuration().setMethodStackTraceDepth(2));
 
 以下信息是随着Log一起输出到logcat
@@ -57,7 +53,7 @@ Logger提供的接口
 “MainActivity.onCreate:19” ， MainActivity.onCreate (类名.方法名)：19 (代码行)， 表示log是在MainActivity#onCreate方法的19行输出的。
 -> 表示调用关系，从Activity.performCreate 5104行调用了MainActivity.onCreate,log输出是在onCreate的19行。
 
-### *显示代码行* ###
+### 显示代码行 ###
 配置如下：
 	
 	Logger.config(new Configuration().setOutputCodeLine(true));
@@ -70,18 +66,81 @@ Logger提供的接口
 “MainActivity.onCreate:19” ， MainActivity.onCreate (类名.方法名)：19 (代码行)， 表示log是在MainActivity#onCreate方法的19行输出的。
 
 
-### *显示线程信息* ###
+### 显示线程信息 ###
 配置如下：
 	
-	Logger.config(new Configuration().setDebug(false)
-                                     .setOutputThreadInfo(true)
+	Logger.config(new Configuration().setOutputThreadInfo(true));
 
 以下信息是随着Log一起输出到logcat
 
 	thread infos[id = 1,name = main,state = RUNNABLE,isDaemon = false,priority = 5] 
 
-**说明：**
-输出当前线程信息(id，名称，状态，优先级)
+
+### 开启DEBUG ###
+配置如下：
+	
+	Logger.config(new Configuration().setDebug(true));
+
+开启之后将能够输出所有通过Logger.debug输出的LOG
 
 
+### 自定义输出 ###
+配置如下：
+	
+	Logger.config(new Configuration().addLogOutputterClass(CustomLogOutputer.class));
+	
 
+自定义输出类
+	
+	CustomLogOutputer.java
+	//在输出所有LOG时，添加分割线(**与##)
+	public class CustomLogOutputer extends AbstractLogOutputter{
+
+	    @Override
+	    public boolean onOutput(int priority, String tag, String msg) {
+			
+	        Log.i(tag,"******************");
+	        System.out.println("msg = " + msg);
+	        Log.i(tag,"#################");
+	
+	        return true;
+	    }
+	}
+
+
+### 自定义扩展信息 ###
+
+配置如下：
+	
+	Logger.config(new Configuration().setLogFormatterClass(CustomLogFormatter.class));
+	
+
+自定义扩展
+	
+	//扩展输出信息
+	public class CustomLogFormatter extends DefaultLogFormatter{
+	
+	    @Override
+	    protected String buildExtInofs(Configuration cfg) {
+	
+	        if(cfg instanceof CustomConfiguration) {
+	            CustomConfiguration cuscfg = (CustomConfiguration) cfg;
+	            if(cuscfg.isOutputPhoneInfos()){
+	                StringBuffer extInfos = new StringBuffer();
+	
+	                String brand = Build.BRAND;
+	                String product = Build.PRODUCT;
+	
+	                extInfos.append("phone infos[")
+	                        .append("brand = ").append(brand).append(",")
+	                        .append("product = ").append(product)
+	                        .append("]");
+	
+	                return extInfos.toString();
+	            }
+	        }
+	
+	        return "";
+	    }
+	}
+	
