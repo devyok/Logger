@@ -39,7 +39,7 @@ Android  Log输出框架
 
 ## 详细配置 ##
 
-### 方法跟踪 ###
+### 1. 方法跟踪 ###
 配置如下：
 	
 	//方法的参数值表示要抓取方法调用的深度
@@ -53,7 +53,7 @@ Android  Log输出框架
 “MainActivity.onCreate:19” ， MainActivity.onCreate (类名.方法名)：19 (代码行)， 表示log是在MainActivity#onCreate方法的19行输出的。
 -> 表示调用关系，从Activity.performCreate 5104行调用了MainActivity.onCreate,log输出是在onCreate的19行。
 
-### 显示代码行 ###
+### 2. 显示代码行 ###
 配置如下：
 	
 	Logger.config(new Configuration().setOutputCodeLine(true));
@@ -66,7 +66,7 @@ Android  Log输出框架
 “MainActivity.onCreate:19” ， MainActivity.onCreate (类名.方法名)：19 (代码行)， 表示log是在MainActivity#onCreate方法的19行输出的。
 
 
-### 显示线程信息 ###
+### 3. 显示线程信息 ###
 配置如下：
 	
 	Logger.config(new Configuration().setOutputThreadInfo(true));
@@ -76,7 +76,7 @@ Android  Log输出框架
 	thread infos[id = 1,name = main,state = RUNNABLE,isDaemon = false,priority = 5] 
 
 
-### 开启DEBUG ###
+### 4. 开启DEBUG ###
 配置如下：
 	
 	Logger.config(new Configuration().setDebug(true));
@@ -84,7 +84,7 @@ Android  Log输出框架
 开启之后将能够输出所有通过Logger.debug输出的LOG
 
 
-### 自定义输出 ###
+### 5. 自定义输出 ###
 配置如下：
 	
 	Logger.config(new Configuration().addLogOutputterClass(CustomLogOutputer.class));
@@ -108,7 +108,7 @@ Android  Log输出框架
 	}
 
 
-### 自定义扩展信息 ###
+### 6. 自定义扩展信息 ###
 
 配置如下：
 	
@@ -144,3 +144,20 @@ Android  Log输出框架
 	    }
 	}
 	
+
+## License ##
+Logger is released under the [Apache 2.0 license](https://github.com/devyok/Logger/blob/master/LICENSE).
+
+Copyright (C) 2017 DengWei.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
