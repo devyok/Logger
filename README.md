@@ -146,7 +146,7 @@ Android  Log输出框架
 	
 
 ## Proguard ##
-如果你使用了proguard来优化，你需要添加以下设置
+如果你使用了proguard来优化工程，你需要添加以下设置
 
 	-keep class com.devyok.logger.** { *; }
 
