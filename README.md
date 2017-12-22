@@ -143,7 +143,14 @@ Android  Log输出框架
 	        return "";
 	    }
 	}
-	
+
+### 7. 针对log tag单独配置 ###
+
+配置如下：
+	Logger.config(new Configuration().setLogFormatterClass(CustomLogFormatter.class),"tagName");
+
+经过以上配置之后，tagName针对的log tag将以此配置为准进行输出。
+
 
 ## Proguard ##
 如果你使用了proguard来优化工程，你需要添加以下设置
