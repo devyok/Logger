@@ -9,11 +9,11 @@ public class DefaultLogFormatter implements LogFormatter{
 	final int LOG_DEPTH = 8;
 	
 	@Override
-	public String format(String message, Object... args) {
+	public String format(String tag,String message, Object... args) {
 		
 		StringBuffer logBuffer = new StringBuffer();
 		
-		Configuration configuration = Logger.getLogService().getConfiguration();
+		Configuration configuration = Logger.getLogService().getConfiguration(tag);
 		
 		String formatResult = message;
 		

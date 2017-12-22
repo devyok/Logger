@@ -1,7 +1,10 @@
 package com.devyok.logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author DengWei
@@ -14,14 +17,19 @@ final class LogService {
 	static final int WARN = 5;
 	static final int ERROR = 6;
 	static final int ASSERT = 7;
-	
-	private List<AbstractLogOutputter> logOutputters = new ArrayList<AbstractLogOutputter>();
+
+	static final String GLOBAL_LOG_TAG = "Logger_Global_Tag";
+
+	final Map<String,List<AbstractLogOutputter>> mLogtagOuputers = new HashMap<String, List<AbstractLogOutputter>>();
+
 	private LogFormatter logFormatter = new DefaultLogFormatter();
 	
-	private Configuration mConfiguration;
+	final Map<String,Configuration> mLogtagConfigs = new HashMap<String, Configuration>();
 	
-	LogService(Configuration configuration){
-		mConfiguration = configuration;
+	LogService(Map<String,Configuration> logtagConfigs){
+		if(logtagConfigs!=null){
+			mLogtagConfigs.putAll(logtagConfigs);
+		}
 	}
 	
 	public void verbose(String tag,String message,Object...args){
@@ -29,9 +37,17 @@ final class LogService {
 	}
 	
 	public void debug(String tag,String message,Object...args){
-		if(mConfiguration.isDebug()) {
+		if(isDebug(tag)) {
 			output(LogService.DEBUG, tag, message,args);
 		}
+	}
+
+	boolean isDebug(String tag){
+		Configuration configuration = mLogtagConfigs.get(tag);
+		if(configuration==null){
+			configuration = mLogtagConfigs.get(GLOBAL_LOG_TAG);
+		}
+		return configuration.isDebug();
 	}
 	
 	public void info(String tag,String message,Object...args){
@@ -50,13 +66,21 @@ final class LogService {
 	}
 	
 	private void output(int priority,String tag,String message,Object...args){
-		List<AbstractLogOutputter> outputters = getLogOutputters();
+		List<AbstractLogOutputter> outputters = getLogOutputters(tag);
 		for(int i = 0;i < outputters.size();i++){
 			AbstractLogOutputter item = outputters.get(i);
 			item.output(priority, tag, message, args);
 		}
 	}
-	
+
+	List<AbstractLogOutputter> getLogOutputters(String tag){
+		List<AbstractLogOutputter> outputters = mLogtagOuputers.get(tag);
+		if(outputters==null){
+			return mLogtagOuputers.get(GLOBAL_LOG_TAG);
+		}
+		return outputters;
+	}
+
 	private String build(String message, Throwable t) {
 		if (t != null && message != null) {
 			message += ": " + LogHelper.getStackTraceString(t);
@@ -66,30 +90,65 @@ final class LogService {
 		return message;
 	}
 	
-	public void addLogOutputter(AbstractLogOutputter logOutputter) {
-		logOutputters.add(logOutputter);
-	}
-	
-	public void setLogFormatter(LogFormatter logFormatter) {
-		this.logFormatter = logFormatter;
-	}
-	
-	public List<AbstractLogOutputter> getLogOutputters() {
-		return logOutputters;
-	}
-	
-	public LogFormatter getLogFormatter() {
-		return logFormatter;
-	}
-	
 	public void build(){
-		for(int i = 0;i < logOutputters.size();i++){
-			logOutputters.get(i).setLogFormatter(logFormatter);
+
+		for(Iterator<Map.Entry<String,Configuration>> iter = mLogtagConfigs.entrySet().iterator();iter.hasNext();){
+
+			Map.Entry<String,Configuration> me = iter.next();
+
+			String tag = me.getKey();
+			Configuration configuration = me.getValue();
+
+			try {
+
+				Class<? extends LogFormatter> logFormatterClass = configuration.getLogFormatter();
+				LogFormatter logFormatter = logFormatterClass.newInstance();
+
+				List<Class<? extends AbstractLogOutputter>> list = configuration.getLogOutputters();
+				List<AbstractLogOutputter> outputters = new ArrayList<AbstractLogOutputter>();
+
+				if (list.size() == 0) {
+					list.add(getDefaultOutput());
+				}
+
+				for (int i = 0; i < list.size(); i++) {
+					Class<? extends AbstractLogOutputter> outputterClass = list.get(i);
+					AbstractLogOutputter logOutputter = outputterClass.newInstance();
+					logOutputter.setLogFormatter(logFormatter);
+					outputters.add(logOutputter);
+				}
+
+				mLogtagOuputers.put(tag,outputters);
+
+
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+	
+	public Configuration getConfiguration(String tag) {
+		if(mLogtagConfigs!=null){
+			Configuration config = mLogtagConfigs.get(tag);
+			if(config==null){
+				return mLogtagConfigs.get(GLOBAL_LOG_TAG);
+			}
+
+			return config;
+		}
+		return null;
+	}
+
+	Class<? extends AbstractLogOutputter> getDefaultOutput(){
+		try {
+			Class<? extends AbstractLogOutputter> defaultImpl = (Class<? extends AbstractLogOutputter>)Class.forName("com.devyok.logger.impl.AndroidConsoleOutputter");
+			return defaultImpl;
+		} catch(Exception e){
+			return null;
 		}
 	}
-	
-	public Configuration getConfiguration() {
-		return mConfiguration;
-	}
+
 	
 }

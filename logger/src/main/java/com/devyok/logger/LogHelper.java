@@ -4,7 +4,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.util.Arrays;
-
+/**
+ * @author DengWei
+ */
 final class LogHelper {
 
 	private LogHelper() {

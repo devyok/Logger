@@ -1,6 +1,6 @@
 package com.devyok.logger;
 
-import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 
@@ -45,13 +45,27 @@ public final class Logger {
 	
 	private Logger(){}
 	
-	private static Configuration sConfiguration = new Configuration();
-	
+	private static Configuration DEFAULT = new Configuration();
+
+	private static ConcurrentHashMap<String,Configuration> logtagConfigurations = new ConcurrentHashMap<String, Configuration>();
+
+	static {
+		logtagConfigurations.put(LogService.GLOBAL_LOG_TAG, DEFAULT);
+	}
+
 	public static void config(Configuration configuration) {
 		if(configuration == null){
 			return ;
 		}
-		sConfiguration = configuration;
+		logtagConfigurations.put(LogService.GLOBAL_LOG_TAG,configuration);
+	}
+
+	public static void config(Configuration configuration,String... tags) {
+
+		for(String tag : tags) {
+			logtagConfigurations.put(tag,configuration);
+		}
+
 	}
 	
 	public static void verbose(String tag,String message,Object...args){
@@ -80,24 +94,8 @@ public final class Logger {
 			
 			if (logService == null) {
 
-				Configuration configuration = sConfiguration;
+				LogService newLogService = new LogService(logtagConfigurations);
 
-				LogService newLogService = new LogService(configuration);
-
-				Class<? extends LogFormatter> logFormatterClass = configuration.getLogFormatter();
-				LogFormatter logFormatter = logFormatterClass.newInstance();
-				newLogService.setLogFormatter(logFormatter);
-				
-				List<Class<? extends AbstractLogOutputter>> list = configuration.getLogOutputters();
-				if (list.size() == 0) {
-					list.add(getDefaultOutput());
-				}
-				for (int i = 0; i < list.size(); i++) {
-					Class<? extends AbstractLogOutputter> outputterClass = list.get(i);
-					AbstractLogOutputter logOutputter = outputterClass.newInstance();
-					newLogService.addLogOutputter(logOutputter);
-				}
-				
 				newLogService.build();
 				sLogServiceHolder.set(newLogService);
 
@@ -108,15 +106,6 @@ public final class Logger {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new LoggerRunntimeException("create logservice exception", e);
-		}
-	}
-
-	static Class<? extends AbstractLogOutputter> getDefaultOutput(){
-		try {
-			Class<? extends AbstractLogOutputter> defaultImpl = (Class<? extends AbstractLogOutputter>)Class.forName("com.devyok.logger.impl.AndroidConsoleOutputter");
-			return defaultImpl;
-		} catch(Exception e){
-			return null;
 		}
 	}
 

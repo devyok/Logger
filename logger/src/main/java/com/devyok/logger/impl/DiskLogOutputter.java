@@ -1,10 +1,10 @@
 package com.devyok.logger.impl;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.devyok.logger.AbstractLogOutputter;
+
+import java.util.concurrent.ConcurrentHashMap;
 /**
- * @author wei.deng
+ * @author DengWei
  */
 public class DiskLogOutputter extends AbstractLogOutputter{
 

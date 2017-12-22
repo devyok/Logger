@@ -1,9 +1,9 @@
 package com.devyok.logger;
 /**
- * @author wei.deng
+ * @author DengWei
  */
 public interface LogFormatter {
 
-	String format(String message,Object...args);
+	String format(String tag,String message,Object...args);
 	
 }

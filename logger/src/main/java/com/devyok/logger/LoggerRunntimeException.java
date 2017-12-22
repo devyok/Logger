@@ -1,6 +1,6 @@
 package com.devyok.logger;
 /**
- * @author wei.deng
+ * @author DengWei
  */
 public class LoggerRunntimeException extends RuntimeException{
 

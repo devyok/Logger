@@ -2,12 +2,12 @@ package com.devyok.logger.impl;
 
 import com.devyok.logger.LogFormatter;
 /**
- * @author wei.deng
+ * @author DengWei
  */
 public class AndroidLogFormatter implements LogFormatter {
 
 	@Override
-	public String format(String message, Object... args) {
+	public String format(String tag,String message, Object... args) {
 		
 		String formatResult = message;
 		

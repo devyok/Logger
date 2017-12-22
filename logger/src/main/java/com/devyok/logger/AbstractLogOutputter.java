@@ -21,7 +21,7 @@ public abstract class AbstractLogOutputter implements LogOutputter{
 		if(logFormatter == null) logFormatter = new DefaultLogFormatter();
 		
 		synchronized (logFormatter) {
-			msg = logFormatter.format(msg,args);
+			msg = logFormatter.format(tag,msg,args);
 		}
 
 		if(onPreOutput(priority,tag,msg)){
