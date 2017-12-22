@@ -16,9 +16,9 @@ public class CustomLogOutputer extends AbstractLogOutputter{
         if(tag.contains("Activity")) {
             Log.i(tag,"UI LOG");
         }
-        System.out.println("priority = " + priority);
-        System.out.println("tag = " + tag);
-        System.out.println("msg = " + msg);
+
+        Log.i(tag,msg);
+
         Log.i(tag,"#################");
 
         return false;

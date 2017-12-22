@@ -18,17 +18,16 @@ public class SampleApplication extends Application{
                                                     .setMethodStackTraceDepth(2)
                                                     .setOutputCodeLine(true)
                                                     .addLogOutputterClass(AndroidConsoleOutputter.class);
+        Logger.config(config);
 
         Configuration customConfiguration = new CustomConfiguration()
                                                     .setOutputPhoneInfos(true) //自定义的输出规则
                                                     .setDebug(false)
                                                     .setOutputThreadInfo(true)
-                                                    .setMethodStackTraceDepth(2)
+                                                    .setMethodStackTraceDepth(3)
                                                     .setOutputCodeLine(true)
                                                     .setLogFormatterClass(CustomLogFormatter.class)
                                                     .addLogOutputterClass(CustomLogOutputer.class);
-
-        Logger.config(customConfiguration);
-
+        Logger.config(customConfiguration,"MainActivity");
     }
 }

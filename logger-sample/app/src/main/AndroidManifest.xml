@@ -3,11 +3,18 @@
           package="com.devyok.logger.sample">
 
     <application
-        android:allowBackup="true"
-        android:label="@string/app_name"
         android:name=".SampleApplication"
-        >
-        <activity android:name=".MainActivity">
+        android:allowBackup="true"
+        android:label="@string/app_name">
+        <activity android:name=".MainActivity"
+                  android:configChanges="orientation|keyboardHidden|locale|layoutDirection"
+                  android:exported="true"
+                  android:label="@string/app_name"
+                  android:launchMode="singleTop"
+                  android:theme="@style/ContentOverlay"
+                  android:clearTaskOnLaunch="false"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
