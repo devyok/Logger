@@ -17,7 +17,7 @@ Android  Log输出框架
 在gradle中引入Logger
 
 	dependencies {
-    	compile 'com.devyok.logger:logger:0.0.8'
+    	compile 'com.devyok.logger:logger:0.0.9'
 	}
 
 ### 第二步 ###
