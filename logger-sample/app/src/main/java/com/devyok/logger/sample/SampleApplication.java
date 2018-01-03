@@ -22,7 +22,7 @@ public class SampleApplication extends Application{
 
         Configuration customConfiguration = new CustomConfiguration()
                                                     .setOutputPhoneInfos(true) //自定义的输出规则
-                                                    .setDebug(false)
+                                                    .setDebug(true)
                                                     .setOutputThreadInfo(true)
                                                     .setMethodStackTraceDepth(3)
                                                     .setOutputCodeLine(true)

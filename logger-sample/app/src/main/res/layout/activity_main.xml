@@ -20,4 +20,32 @@
         android:text="打印自定义配置LOG"
         />
 
+    <Button
+        android:id="@+id/log_array_obj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打印数组"
+        />
+
+    <Button
+        android:id="@+id/log_data_obj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打印数据对象"
+        />
+
+    <Button
+        android:id="@+id/log_json_obj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打印Json"
+        />
+
+    <Button
+        android:id="@+id/log_xml_obj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打印Xml"
+        />
+
 </LinearLayout>

@@ -17,7 +17,7 @@ public class CustomLogOutputer extends AbstractLogOutputter{
             Log.i(tag,"UI LOG");
         }
 
-        Log.i(tag,msg);
+        Log.i(tag,String.valueOf(msg));
 
         Log.i(tag,"#################");
 
