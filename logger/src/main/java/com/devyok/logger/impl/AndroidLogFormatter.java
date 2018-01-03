@@ -7,8 +7,8 @@ import com.devyok.logger.LogFormatter;
 public class AndroidLogFormatter implements LogFormatter {
 
 	@Override
-	public String format(String tag,String message, Object... args) {
-		
+	public String format(String tag,Object object, Object... args) {
+		String message = String.valueOf(object);
 		String formatResult = message;
 		
 		if(args!=null && args.length > 0){

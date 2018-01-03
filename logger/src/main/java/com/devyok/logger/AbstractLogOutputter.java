@@ -16,18 +16,26 @@ public abstract class AbstractLogOutputter implements LogOutputter{
 	}
 
 	@Override
-	public int output(int priority, String tag, String msg,Object...args) {
+	public int output(int priority, String tag, Object msg,Object...args) {
 
 		if(logFormatter == null) logFormatter = new DefaultLogFormatter();
-		
+		String result = "";
 		synchronized (logFormatter) {
-			msg = logFormatter.format(tag,msg,args);
+
+			LogFormatter formatter = LogFormatterFactory.getFormatter(args);
+			if(formatter!=null){
+				result = formatter.format(tag,msg,args);
+			} else {
+				result = LogHelper.toString(msg);
+			}
+
+			result = logFormatter.format(tag,result,args);
 		}
 
-		if(onPreOutput(priority,tag,msg)){
+		if(onPreOutput(priority,tag,result)){
 			return 0;
 		}
-		if(onOutput(priority,tag,msg)){
+		if(onOutput(priority,tag,result)){
 			return 1;
 		}
 		return 0;

@@ -41,6 +41,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class Logger {
 
+	public static enum DataType {
+		STRING,
+		BEAN,
+		JSON,
+		XML
+	}
+
 	static final ThreadLocal<LogService> sLogServiceHolder = new ThreadLocal<LogService>();
 	
 	private Logger(){}
@@ -50,14 +57,14 @@ public final class Logger {
 	private static ConcurrentHashMap<String,Configuration> logtagConfigurations = new ConcurrentHashMap<String, Configuration>();
 
 	static {
-		logtagConfigurations.put(LogService.GLOBAL_LOG_TAG, DEFAULT);
+		logtagConfigurations.put(LogServiceImpl.GLOBAL_LOG_TAG, DEFAULT);
 	}
 
 	public static void config(Configuration configuration) {
 		if(configuration == null){
 			return ;
 		}
-		logtagConfigurations.put(LogService.GLOBAL_LOG_TAG,configuration);
+		logtagConfigurations.put(LogServiceImpl.GLOBAL_LOG_TAG,configuration);
 	}
 
 	public static void config(Configuration configuration,String... tags) {
@@ -68,23 +75,23 @@ public final class Logger {
 
 	}
 	
-	public static void verbose(String tag,String message,Object...args){
+	public static void verbose(String tag,Object message,Object...args){
 		getLogService().verbose(tag, message, args);
 	}
-	
-	public static void debug(String tag,String message,Object...args){
+
+	public static void debug(String tag,Object message,Object... args){
 		getLogService().debug(tag, message, args);
 	}
-	
-	public static void info(String tag,String message,Object...args){
+
+	public static void info(String tag,Object message,Object...args){
 		getLogService().info(tag, message, args);
 	}
 	
-	public static void error(String tag,String message,Object...args){
+	public static void error(String tag,Object message,Object...args){
 		getLogService().error(tag, message, args);
 	}
 	
-	public static void error(String tag,String message,Throwable t,Object...args){
+	public static void error(String tag,Object message,Throwable t,Object...args){
 		getLogService().error(tag, message, t, args);
 	}
 	
@@ -94,7 +101,7 @@ public final class Logger {
 			
 			if (logService == null) {
 
-				LogService newLogService = new LogService(logtagConfigurations);
+				LogServiceImpl newLogService = new LogServiceImpl(logtagConfigurations);
 
 				newLogService.build();
 				sLogServiceHolder.set(newLogService);

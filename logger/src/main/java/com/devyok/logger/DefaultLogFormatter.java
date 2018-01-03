@@ -9,48 +9,48 @@ public class DefaultLogFormatter implements LogFormatter{
 	final int LOG_DEPTH = 8;
 	
 	@Override
-	public String format(String tag,String message, Object... args) {
+	public String format(String tag,Object object, Object... args) {
 		
 		StringBuffer logBuffer = new StringBuffer();
 		
 		Configuration configuration = Logger.getLogService().getConfiguration(tag);
-		
-		String formatResult = message;
+		String message = String.valueOf(object);
+		String formatResult = String.valueOf(message);
 		
 		if(args!=null && args.length > 0){
 			formatResult = String.format(message, args);
 		}
 		
-		logBuffer.append("[").append(formatResult).append("] ,");
+		logBuffer.append("[").append(formatResult).append("]");
 		
 		if(configuration.isOutputCodeLine()){
+			logBuffer.append("\n");
 			String codeLine = buildCodeLine();
 			logBuffer.append(codeLine);
-			logBuffer.append(" ,");
 		}
 		
 		if(configuration.isMaxMethodStackTraceDepth() || configuration.getMethodStackTraceDepth() > 0){
+			logBuffer.append("\n");
 			String methodTrace = buildMethodStackTrace(configuration.isMaxMethodStackTraceDepth() ? Integer.MAX_VALUE : configuration.getMethodStackTraceDepth());
 			logBuffer.append(methodTrace);
-			logBuffer.append(" ,");
 		}
 		
 		if(configuration.isOutputThreadInfo()){
+			logBuffer.append("\n");
 			String currentThreadInfos = buildThreadInfos();
 			logBuffer.append(currentThreadInfos);
-			logBuffer.append(" ,");
 		}
 		
 		if(configuration.isOutputSystemInfo()){
+			logBuffer.append("\n");
 			String systemInfos = buildSystemInfos();
 			logBuffer.append(systemInfos);
-			logBuffer.append(" ,");
 		}
 
 		String extInfos = buildExtInofs(configuration);
 
 		if(extInfos == null){
-			logBuffer = logBuffer.deleteCharAt(logBuffer.length() - 1);
+//			logBuffer = logBuffer.deleteCharAt(logBuffer.length() - 1);
 		} else {
 			logBuffer.append(extInfos);
 		}

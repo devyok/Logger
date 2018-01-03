@@ -4,6 +4,6 @@ package com.devyok.logger;
  */
 public interface LogFormatter {
 
-	String format(String tag,String message,Object...args);
+	String format(String tag,Object message,Object...args);
 	
 }

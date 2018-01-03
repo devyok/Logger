@@ -91,27 +91,47 @@ final class LogHelper {
 
 	static String logLevel(int value) {
 		switch (value) {
-		case LogService.VERBOSE:
+		case LogServiceImpl.VERBOSE:
 			return "VERBOSE";
-		case LogService.DEBUG:
+		case LogServiceImpl.DEBUG:
 			return "DEBUG";
-		case LogService.INFO:
+		case LogServiceImpl.INFO:
 			return "INFO";
-		case LogService.WARN:
+		case LogServiceImpl.WARN:
 			return "WARN";
-		case LogService.ERROR:
+		case LogServiceImpl.ERROR:
 			return "ERROR";
-		case LogService.ASSERT:
+		case LogServiceImpl.ASSERT:
 			return "ASSERT";
 		default:
 			return "UNKNOWN";
 		}
 	}
 
-	public static String toString(Object object) {
-		if (!object.getClass().isArray()) {
+	static String toString(Object object) {
+		if(object == null){
+			return "null";
+		}
+
+		if(object instanceof String){
 			return object.toString();
 		}
+		if(object instanceof Integer){
+			return object.toString();
+		}
+		if(object instanceof Long){
+			return object.toString();
+		}
+		if(object instanceof Double){
+			return object.toString();
+		}
+		if(object instanceof Boolean){
+			return object.toString();
+		}
+		if(object instanceof Character){
+			return object.toString();
+		}
+
 		if (object instanceof boolean[]) {
 			return Arrays.toString((boolean[]) object);
 		}
@@ -139,6 +159,8 @@ final class LogHelper {
 		if (object instanceof Object[]) {
 			return Arrays.deepToString((Object[]) object);
 		}
-		return "Couldn't find a correct type for the object";
+
+		return object.toString();
 	}
+
 }
