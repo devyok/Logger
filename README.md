@@ -6,8 +6,9 @@ Android  Log输出框架
 
 - 规范LOG输出;
 - 控制拦截应用中所有LOG输出；
-- 可定制LOG输出风格；
+- 可根据LOG TAG或全局定制LOG输出风格；
 - 可定制相关LOG输出时携带的调试信息(方法调用链/线程信息等)；
+- 可格式化输出JSON/XML/DataObject等数据格式；
 
 
 ## 如何使用 ##
@@ -17,7 +18,7 @@ Android  Log输出框架
 在gradle中引入Logger
 
 	dependencies {
-    	compile 'com.devyok.logger:logger:0.0.9'
+    	compile 'com.devyok.logger:logger:1.0.0'
 	}
 
 ### 第二步 ###
@@ -152,6 +153,29 @@ Android  Log输出框架
 
 经过以上配置之后，tagName针对的log tag将以此配置为准进行输出。
 
+### 8. 输出JSON/XML/DataObject ###
+
+
+- 输出DataObject
+
+		User user = new User();
+	    user.setAddress("bj");
+	    user.setId("1");
+	    user.setAge(30);
+	    user.setName("devyok");
+	
+	    Logger.debug("tag",user, Logger.DataType.BEAN);
+
+- 输出Json
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("age","10");
+		jsonObject.put("name","dw");
+		Logger.info("tag",jsonObject.toString(), Logger.DataType.JSON);
+
+- 输出Xml
+
+		Logger.info("tag","<xml></xml>", Logger.DataType.XML);
 
 ## Proguard ##
 如果你使用了proguard来优化工程，你需要添加以下设置
