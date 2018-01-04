@@ -1,3 +1,6 @@
+[![license](http://img.shields.io/badge/license-Apache2.0-brightgreen.svg?style=flat)](https://github.com/devyok/Logger/blob/master/LICENSE)
+[![Release Version](https://img.shields.io/badge/release-1.0.0-brightgreen.svg)](https://jcenter.bintray.com/com/devyok/logger/logger/1.0.0/)
+
 # Logger
 Android  Log输出框架
 
